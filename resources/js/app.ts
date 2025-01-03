@@ -5,7 +5,8 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
-import Quasar from 'quasar';
+import { Quasar, QForm, QInput } from 'quasar';
+import 'quasar/dist/quasar.css';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

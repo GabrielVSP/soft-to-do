@@ -35,64 +35,85 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <div class="!text-black">
+        <q-form @submit.prevent="submit">
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+            <div class="mb-2">
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <label for="email">Email</label>
+
+                <div class="p-1">
+                    <q-input
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        :dense="dense"
+                        outlined
+                        input-style="--tw-ring-offset-color: none"
+                        color="black"
+                        required
+                    />
+                    <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
+                        {{ form.errors.email }}
+                    </q-banner>
+                </div>
+
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <div class="mb-2">
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                <label for="password">Password</label>
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                <div class="p-1">
+
+                    <q-input
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        :dense="dense"
+                        outlined
+                        input-style="--tw-ring-offset-color: none"
+                        color="black"
+                        required
+                    />
+
+                    <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
+                        {{ form.errors.email }}
+                    </q-banner>
+
+                </div>
+
             </div>
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
+            <div class="w-full flex justify-between items-center">
+
+                <div class="">
+                    <Link
+                        :href="route('register')"
+                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                </label>
+                        Register
+                    </Link>
+                </div>
+
+                <div class="w-2/3 flex items-center">
+
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="px-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                        Forgot your password?
+                    </Link>
+                    <q-btn label="Submit" type="submit" color="primary" />
+
+                </div>
+
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Forgot your password?
-                </Link>
+        </q-form>
 
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
+        </div>
+
     </GuestLayout>
 </template>
