@@ -36,6 +36,7 @@ const submit = () => {
         </div>
 
         <div class="!text-black">
+
         <q-form @submit.prevent="submit">
 
             <div class="mb-2">
@@ -77,8 +78,8 @@ const submit = () => {
                         required
                     />
 
-                    <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
-                        {{ form.errors.email }}
+                    <q-banner v-if="form.errors.password" class="text-negative !px-1 !py-0 !m-0">
+                        {{ form.errors.password }}
                     </q-banner>
 
                 </div>
@@ -87,7 +88,7 @@ const submit = () => {
 
             <div class="w-full flex justify-between items-center">
 
-                <div class="">
+                <div>
                     <Link
                         :href="route('register')"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

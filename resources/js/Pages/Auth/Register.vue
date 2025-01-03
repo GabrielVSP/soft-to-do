@@ -26,90 +26,116 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <div class="!text-black">
+            
+            <q-form @submit.prevent="submit">
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+                <div class="mb-2">
+    
+                    <label for="name">Name</label>
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                    <div class="p-1">
+                        <q-input
+                            id="name"
+                            type="text"
+                            v-model="form.name"
+                            :dense="dense"
+                            outlined
+                            input-style="--tw-ring-offset-color: none"
+                            color="black"
+                            required
+                        />
+                        <q-banner v-if="form.errors.name" class="text-negative !px-1 !py-0 !m-0">
+                            {{ form.errors.name }}
+                        </q-banner>
+                    </div>
+
+                </div>
+    
+                <div class="mb-2">
+    
+                    <label for="email">Email</label>
+    
+                    <div class="p-1">
+                        <q-input
+                            id="email"
+                            type="email"
+                            v-model="form.email"
+                            :dense="dense"
+                            outlined
+                            input-style="--tw-ring-offset-color: none"
+                            color="black"
+                            required
+                        />
+                        <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
+                            {{ form.errors.email }}
+                        </q-banner>
+                    </div>
+    
+                </div>
+    
+                <div class="mb-2">
+    
+                    <label for="password">Password</label>
+    
+                    <div class="p-1">
+    
+                        <q-input
+                            id="password"
+                            type="password"
+                            v-model="form.password"
+                            :dense="dense"
+                            outlined
+                            input-style="--tw-ring-offset-color: none"
+                            color="black"
+                            required
+                        />
+    
+                        <q-banner v-if="form.errors.password" class="text-negative !px-1 !py-0 !m-0">
+                            {{ form.errors.password }}
+                        </q-banner>
+    
+                    </div>
+    
+                </div>
+
+                <div class="mb-2">
+    
+                    <label for="password_confirmation">Confirm password</label>
+
+                    <div class="p-1">
+                        <q-input
+                            id="password_confirmation"
+                            type="password"
+                            v-model="form.password_confirmation"
+                            :dense="dense"
+                            outlined
+                            input-style="--tw-ring-offset-color: none"
+                            color="black"
+                            required
+                        />
+                        <q-banner v-if="form.errors.password_confirmation" class="text-negative !px-1 !py-0 !m-0">
+                            {{ form.errors.password_confirmation }}
+                        </q-banner>
+                    </div>
+
+                </div>
+    
+                <div class="w-full flex justify-end items-center">
+    
+                    <Link
+                        :href="route('login')"
+                        class="px-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                        Register
+                    </Link>
+                    <q-btn label="Submit" type="submit" color="primary" />
+    
+                </div>
+    
+            </q-form>
+    
             </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
+            
     </GuestLayout>
 </template>
