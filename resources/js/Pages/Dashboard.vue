@@ -8,11 +8,6 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Dashboard
-            </h2>
-        </template>
 
         <div class="py-6">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -22,9 +17,9 @@ import { Head } from '@inertiajs/vue3';
                         <!-- SEARCH BAR -->
                     </div>
 
-                    <div class="w-full p-6 text-gray-900 flex items-center justify-evenly">
+                    <div class="w-full p-6 text-gray-900 flex flex-col items-center justify-evenly lg:flex-row">
 
-                        <div class="mb-1 p-3 w-11/12 shadow-lg">
+                        <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
                                 <h3 class="text-lg font-bold border-b border-yellow-500 w-fit">Pending</h3>
@@ -42,7 +37,7 @@ import { Head } from '@inertiajs/vue3';
 
                         </div>
 
-                        <div class="mb-1 p-3 w-11/12 shadow-lg">
+                        <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
                                 <h3 class="text-lg font-bold border-b border-blue-500 w-fit">In Progress</h3>
@@ -60,7 +55,7 @@ import { Head } from '@inertiajs/vue3';
 
                         </div>
 
-                        <div class="mb-1 p-3 w-11/12 shadow-lg">
+                        <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
                                 <h3 class="text-lg font-bold border-b border-green-500 w-fit">Completed</h3>
