@@ -6,6 +6,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+const dense = true
+
 const form = useForm({
     name: '',
     email: '',
@@ -127,15 +129,15 @@ const submit = () => {
                         :href="route('login')"
                         class="px-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Register
+                        Already have an account? Login
                     </Link>
-                    <q-btn label="Submit" type="submit" color="primary" />
+                    <q-btn label="Submit" type="submit" color="primary" size="13" />
     
                 </div>
     
             </q-form>
     
             </div>
-            
+
     </GuestLayout>
 </template>

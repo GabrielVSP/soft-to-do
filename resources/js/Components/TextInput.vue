@@ -15,9 +15,19 @@ defineExpose({ focus: () => input.value?.focus() });
 </script>
 
 <template>
-    <input
+    <q-input
+                            id="name"
+                            type="text"
+                            v-model="model"
+                            :dense="dense"
+                            outlined
+                            input-style="--tw-ring-offset-color: none"
+                            color="black"
+                            required
+                        />
+    <!-- <input
         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         v-model="model"
         ref="input"
-    />
+    /> -->
 </template>

@@ -7,6 +7,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+const dense = true
+
 defineProps<{
     canResetPassword?: boolean;
     status?: string;
@@ -53,6 +55,7 @@ const submit = () => {
                         input-style="--tw-ring-offset-color: none"
                         color="black"
                         required
+                        dense
                     />
                     <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
                         {{ form.errors.email }}
@@ -76,6 +79,7 @@ const submit = () => {
                         input-style="--tw-ring-offset-color: none"
                         color="black"
                         required
+                        dense
                     />
 
                     <q-banner v-if="form.errors.password" class="text-negative !px-1 !py-0 !m-0">
