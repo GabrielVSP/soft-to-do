@@ -9,7 +9,7 @@ import { RouterLink } from 'vue-router';
 
             <header class="px-2 py-1 md:py-2 lg:px-5 shadow-sm flex justify-between items-center lg:w-[90%] lg:mx-auto">
 
-                <h1 class="text-xl p-1">To-do App</h1>
+                <h1 class="text-xl p-1"><RouterLink to="/">To-do App</RouterLink></h1>
 
                 <nav>
 
