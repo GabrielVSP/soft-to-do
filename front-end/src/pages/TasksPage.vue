@@ -2,15 +2,43 @@
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout.vue';
 import { ref } from 'vue'
 
+interface Row {
+  title: string;
+  description: string;
+  status: string;
+  category: string;
+  createdAt: string;
+  completedAt: string;
+  actions: string;
+}
+
+interface Column {
+  name: string;
+  label: string;
+  align?: 'left' | 'center' | 'right';
+  field: string | ((row: Row) => any);
+  required?: boolean;
+  sortable?: boolean;
+}
+
+interface RequestProps {
+  pagination: {
+    page: number;
+    rowsPerPage: number;
+    sortBy: string;
+    descending: boolean;
+  };
+}
+
 const progress = ref(true)
 const pending = ref(true)
 const completed = ref(true)
 
-const rows = ref([
+const rows = ref<Row[]>([
   {  title: 'Fazer arroz', description: 'Faze arros', status: 'pending', category: 'comida', createdAt: 'doisdodois', completedAt: 'never', actions: '' },
 ]);
 
-const columns = ref([
+const columns = ref<Column[]>([
   { name: 'title', label: 'Title', align: 'left', field: row => row.title },
   { name: 'description', label: 'Description', align: 'center', field: row => row.description },
   { name: 'status', label: 'Status', align: 'center', field: row => row.status },
@@ -25,7 +53,7 @@ const pagination = ref({
   rowsPerPage: 5,
 });
 
-function onRequest(props) {
+function onRequest(props: RequestProps) {
   pagination.value = props.pagination;
 }
 
@@ -74,6 +102,32 @@ function onRequest(props) {
                         >
                             <template v-slot:top-right>
                                 <q-btn color="black" label="Create task" class="rounded-md" />
+                            </template>
+
+                            <!--ACTIONS-->
+
+                            <template v-slot:body-cell-actions="props">
+                                <q-btn 
+                                icon="edit" 
+                                color="primary" 
+                                flat 
+                                @click="" 
+                                />
+                                <q-btn 
+                                icon="delete" 
+                                color="negative" 
+                                flat 
+                                @click="" 
+                                />
+                            </template>
+
+                            <!--CATEGORY-->
+
+                            <template v-slot:body-cell-category="props">
+                                <div class="flex items-center justify-center px-16p py-7">
+                                    <div class="circle w-2 h-2 rounded-full bg-red-400"></div>
+                                    <span class="q-ml-sm">{{ props.row.category }}</span>
+                                </div>
                             </template>
                         </q-table>
 
