@@ -1,12 +1,12 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen text-black text-center q-pa-md flex flex-center">
     <div>
-      <div style="font-size: 30vh">
+      <div class="text-5xl">
         404
       </div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+      <div class="text-lg" style="opacity:.4">
+        Looks like there is nothig here
       </div>
 
       <q-btn
