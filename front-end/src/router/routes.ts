@@ -5,19 +5,40 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'index',
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    beforeEnter(to, from, next) {
+      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+        next('/login');
+        return
+      } 
+        next()
+    }
   },
   {
     path: '/tasks',
     name: 'tasks',
     children: [{ path: '', component: () => import('pages/Tasks/TasksPage.vue') }],
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    beforeEnter(to, from, next) {
+      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+        next('/login');
+        return
+      } 
+        next()
+    }
   },
   {
     path: '/tasks/:id',
     name: 'task',
     children: [{ path: '', component: () => import('pages/Tasks/SingleTaskPage.vue') }],
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    beforeEnter(to, from, next) {
+      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+        next('/login');
+        return
+      } 
+        next()
+    }
   },
   {
     path: '/login',
@@ -37,16 +58,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
-router.beforeEach((to, from, next) => {
-
-  if(to.meta.requiresAuth && !localStorage.getItem('accessToken')) {
-    next({ name: 'login' });
-    return
-  }
-
-  next()
-
-})
 
 export default routes;

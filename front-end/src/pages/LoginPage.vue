@@ -20,27 +20,34 @@ const form = useForm({
 
 const submit = () => {
 
-    axios.post('http://localhost:8000/api/login', {
-        email: form.email,
-        password: form.password
-    }, {
-        withCredentials: true,
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': '*',
-        }
-    },)
-    .then((res: { data: { token: string } }) => {
+    form.post('http://localhost:8000/api/login')
 
-        localStorage.setItem('accessToken', res.data.token)
-        router.push({ name: 'index' })
+}
 
-    })
-    .catch((error) => {
-        console.error('Error:', error.response?.data || error.message);
-    })
+// const submit = () => {
 
-};
+//     axios.post('http://localhost:8000/api/login', {
+//         email: form.email,
+//         password: form.password
+//     }, {
+//         withCredentials: true,
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Accept': '*',
+//         }
+//     },)
+//     .then((res: { data: { token: string } }) => {
+
+//         localStorage.setItem('accessToken', res.data.token)
+//         router.push({ name: 'index' })
+
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error.response?.data || error.message);
+//     })
+
+// };
+
 </script>
 
 <template>
@@ -112,15 +119,16 @@ const submit = () => {
                     </Link>
                 </div>
 
-                <div class="w-2/3 flex items-center">
+                <div class="w-2/3 flex justify-end items-center">
 
-                    <Link
-                        v-if="canResetPassword"
+                    <RouterLink
+                        to="register"
                         class="px-2 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Forgot your password?
-                    </Link>
-                    <q-btn label="Submit" type="submit" color="primary" />
+                        New here? Register
+                    </RouterLink>
+
+                    <q-btn label="Submit" type="submit" color="black" class="p-1" dense />
 
                 </div>
 
