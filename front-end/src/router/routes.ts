@@ -10,7 +10,13 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/tasks',
     name: 'tasks',
-    children: [{ path: '', component: () => import('pages/TasksPage.vue') }],
+    children: [{ path: '', component: () => import('pages/Tasks/TasksPage.vue') }],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/tasks/:id',
+    name: 'task',
+    children: [{ path: '', component: () => import('pages/Tasks/SingleTaskPage.vue') }],
     meta: { requiresAuth: true }
   },
   {
