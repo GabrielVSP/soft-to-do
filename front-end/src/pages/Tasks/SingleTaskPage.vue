@@ -49,7 +49,7 @@ const getTask = async () => {
             task.value = res.data
             form.title = res.data.title
             form.description = res.data.description
-            form.category = res.data.category.id
+            form.category = res.data.category.name
         }
 
     } catch(error) {
@@ -105,6 +105,21 @@ const submit = () => {
     
     if(task.value) {
 
+        axios.patch('http://localhost:8000/api/tasks/'+taskId, {
+            title: form.title,
+            description: form.description,
+            category_id: form.category?.value,
+        }, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+        }
+        })
+        .catch((error) => {
+            console.error('Error:', error.response?.data || error.message);
+        }).finally(() => {
+            router.push({name: 'tasks'})
+        })
+
     }
 
     if(!task.value?.title) {
@@ -122,7 +137,7 @@ const submit = () => {
         .catch((error) => {
             console.error('Error:', error.response?.data || error.message);
         }).finally(() => {
-            // router.push({name: 'tasks'})
+            router.push({name: 'tasks'})
         })
 
     }

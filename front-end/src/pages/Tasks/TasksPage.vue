@@ -82,10 +82,12 @@ onMounted(() => {
 
                     <div class="px-3 w-full flex justify-between">
 
-                        <div class="flex justify-center md:justify-start">
+                        <div class="w-[80%] flex justify-center md:justify-start">
+
                             <input type="text" name="search" id="search"
                                 class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]"
                                 placeholder="Search">
+
                             <q-btn-dropdown stretch flat icon="fas fa-filter" size="12"
                                 class="text-[#64748b] scale-90 w-fit">
                                 <q-list dense>
@@ -100,6 +102,7 @@ onMounted(() => {
                                     </q-item>
                                 </q-list>
                             </q-btn-dropdown>
+
                         </div>
 
                         <div>
@@ -112,23 +115,23 @@ onMounted(() => {
 
                     <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in tasks" :key="task.id">
 
-                        <div class="flex justify-start gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
+                        <div class="w-1/3 flex justify-between gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
 
-                            <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
-                                <q-tooltip v-if="showTooltip" class="bg-white text-black shadow-lg">
-                                    {{task.category_id}}
-                                </q-tooltip>
-                            </div>
-
-                            <div>
-                                <p class="text-lg font-bold mb-0">{{ task.title }}</p>
-                                <p>{{ task.description }}</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 grid-rows-2 gap-1">
-                                <p>Category: <strong :style="{ color: task.category.color }">{{task.category.name}}</strong></p>
-                                <p>Completed At: <strong> - </strong></p>
-                                <p>Created At: <strong>{{moment(task.created_at).format('DD/MM/YYYY')}}</strong></p>
+                            <div class="flex justify-between gap-5 items-center">
+                                <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
+                                    <q-tooltip v-if="showTooltip" class="bg-white text-black shadow-lg">
+                                        {{task.category_id}}
+                                    </q-tooltip>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-bold mb-0">{{ task.title }}</p>
+                                    <p>{{ task.description }}</p>
+                                </div>
+                                <div class="grid grid-cols-2 grid-rows-2 gap-1 self-end">
+                                    <p>Category: <strong :style="{ color: task.category.color }">{{task.category.name}}</strong></p>
+                                    <p>Completed At: <strong> - </strong></p>
+                                    <p>Created At: <strong>{{moment(task.created_at).format('DD/MM/YYYY')}}</strong></p>
+                                </div>
                             </div>
 
                             <div>
