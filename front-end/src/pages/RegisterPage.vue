@@ -4,9 +4,11 @@ import GuestLayout from '../layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 import { ref } from 'vue';
+import { useAuth } from 'src/hooks/useAuth';
 
 const dense = true
 const router = useRouter()
+const auth = useAuth()
 
 defineProps<{
     canResetPassword?: boolean;
@@ -22,7 +24,7 @@ const form = useForm({
     password_confirmation: ''
 });
 
-const submit = () => {
+const submit = async () => {
 
     axios.post('http://localhost:8000/api/register', {
         name: form.email,
@@ -38,9 +40,13 @@ const submit = () => {
     },)
     .then((res: { data: { token: string } }) => {
 
-        localStorage.setItem('accessToken', res.data.token)
-        router.push({ name: 'index' })
+        if (res.data.token) {
 
+            auth.setToken(res.data.token)
+            router.push({ name: 'index' })
+
+        }
+        
     })
     .catch((error) => {
         

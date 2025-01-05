@@ -1,4 +1,7 @@
+import { useAuth } from 'src/hooks/useAuth';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+
+const auth = useAuth()
 
 const routes: RouteRecordRaw[] = [
   {
@@ -19,7 +22,7 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/Tasks/TasksPage.vue') }],
     meta: { requiresAuth: true },
     beforeEnter(to, from, next) {
-      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+      if(auth.user()) {
         next('/login');
       } else {
         next() }

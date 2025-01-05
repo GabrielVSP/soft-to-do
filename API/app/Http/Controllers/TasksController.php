@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
 
-    public function index() {
+    public function index(): JsonResponse  {
 
         $tasks = Task::paginate(10);
         
@@ -19,7 +20,7 @@ class TasksController extends Controller
 
     }
 
-    public function show(string $id) {
+    public function show(string $id): JsonResponse {
 
         $task = Task::find($id);
 
@@ -27,7 +28,7 @@ class TasksController extends Controller
 
     }
 
-    public function store(TaskCreateRequest $request) {
+    public function store(TaskCreateRequest $request): JsonResponse {
 
         $data = $request->validated();
         $task = Task::create($data);
@@ -36,7 +37,7 @@ class TasksController extends Controller
 
     }
 
-    public function update(TaskUpdateRequest $request, string $id) {
+    public function update(TaskUpdateRequest $request, string $id): JsonResponse {
 
         $data = $request->validated();
         $task = Task::find($id);
