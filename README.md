@@ -81,8 +81,10 @@ Certifique-se de que o back-end está usando a porta :8000 e o front-end a porta
    * Retorna todas as tarefas vinculadas a um usuário, é necessário enviar o token Bearer nos headers.
 - `GET` **api/tasks/[ID]**:
    * Retorna a tarefa especificada pelo ID, é necessário enviar o token Bearer nos headers.
+- `GET` **api/categories**:
+    * Retorna todas as categorias.
 
-1- Métodos POST
+2- Métodos POST
 - `POST` **api/register**:
    * Cria um novo usuário junte do token de autenticação.
     ```json
@@ -91,7 +93,7 @@ Certifique-se de que o back-end está usando a porta :8000 e o front-end a porta
       "email": "Email do usuário",
       "password": "senha do usuário",
       "password_confirmation": "senha do usuário"
-    }```
+    }
 - `POST` **api/login**:
    * Retorna o token de autenticação
     ```json
@@ -100,20 +102,28 @@ Certifique-se de que o back-end está usando a porta :8000 e o front-end a porta
       "password": "senha do usuário"
     }
 - `POST` **api/task**:
-   * Cria uma nova tarefa.
-   * ```json
+   * Cria uma nova tarefa, , é necessário enviar o token Bearer nos headers..
+    ```json
     {
       "title": "Título da tarefa",
       "description": "Descrição da tarefa",
       "category_id": "ID da categoria a qual a tarefa pertence(em número)",
       "user_id": "ID do usuário a qual a tarefa pertence(em número)"
-    }```
-- `POST` **api/register**:
-   * Cria um novo usuário junte do token de autenticação.
-   * ```json
+    }
+  
+3- Métodos PATCH/PUT
+- `PATCH` **api/task/[ID]**:
+   * Atualiza a tarefa especificada pelo ID, é necessário enviar o token Bearer nos headers.
+    ```json
     {
-      "name": "Nome do usuário",
-      "email": "Email do usuário",
-      "password": "senha"
-      "password_confirmation": "senha"
-    }```
+      "title": "Título da tarefa",
+      "description": "Descrição da tarefa",
+      "category_id": "ID da categoria a qual a tarefa pertence(em número)",
+      "status": "pending | in_progress | completed",
+      "completion_date": "String que informa quando foi concluida"
+    }
+
+4- Métodos DELETE
+- `DELETE` **api/task/[ID]**:
+   * Remove a tarefa especifica pelo ID, é necessário enviar o token Bearer nos headers.
+    
