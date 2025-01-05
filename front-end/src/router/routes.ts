@@ -10,11 +10,11 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
     meta: { requiresAuth: true },
     beforeEnter(to, from, next) {
-      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+      if(auth.user()) {
         next('/login');
-      } else {
+      }
         next() }
-    }
+    
   },
   {
     path: '/tasks',
@@ -24,9 +24,9 @@ const routes: RouteRecordRaw[] = [
     beforeEnter(to, from, next) {
       if(auth.user()) {
         next('/login');
-      } else {
+      } 
         next() }
-    }
+    
   },
   {
     path: '/tasks/:id',
@@ -34,11 +34,11 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/Tasks/SingleTaskPage.vue') }],
     meta: { requiresAuth: true },
     beforeEnter(to, from, next) {
-      if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
+      if(auth.user()) {
         next('/login');
-      } else {
+      } 
         next() }
-    }
+    
   },
   {
     path: '/login',

@@ -1,61 +1,69 @@
 <script setup lang="ts">
+import axios from 'axios';
 import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
-import { ref } from 'vue'
-
-interface Row {
-  title: string;
-  description: string;
-  status: string;
-  category: string;
-  createdAt: string;
-  completedAt: string;
-  actions: string;
-}
-
-interface Column {
-  name: string;
-  label: string;
-  align?: 'left' | 'center' | 'right';
-  field: string | ((row: Row) => any);
-  required?: boolean;
-  sortable?: boolean;
-}
-
-interface RequestProps {
-  pagination: {
-    page: number;
-    rowsPerPage: number;
-    sortBy: string;
-    descending: boolean;
-  };
-}
+import moment from 'moment';
+import { onMounted, ref } from 'vue'
 
 const progress = ref(true)
 const pending = ref(true)
 const completed = ref(true)
+const showTooltip = ref(false);
 
-const rows = ref<Row[]>([
-  {  title: 'Fazer arroz', description: 'Faze arros', status: 'pending', category: 'comida', createdAt: 'doisdodois', completedAt: 'never', actions: '' },
-]);
-
-const columns = ref<Column[]>([
-  { name: 'title', label: 'Title', align: 'left', field: row => row.title },
-  { name: 'description', label: 'Description', align: 'center', field: row => row.description },
-  { name: 'status', label: 'Status', align: 'center', field: row => row.status },
-  { name: 'category', label: 'Category', align: 'center', field: row => row.category },
-  { name: 'createdAt', label: 'Created At', align: 'center', field: row => row.createdAt },
-  { name: 'completedAt', label: 'Completed At', align: 'center', field: row => row.completedAt },
-  { name: 'actions', label: ' ', align: 'center', field: row => row.actions },
-]);
-
-const pagination = ref({
-  page: 1,
-  rowsPerPage: 5,
-});
-
-function onRequest(props: RequestProps) {
-  pagination.value = props.pagination;
+interface Task {
+    id: number
+    title: string
+    description: string
+    status: string
+    category_id: number
+    created_at: string
+    category: {
+        name: string,
+        color: string
+    }
 }
+
+const tasks = ref<Array<Task>>([])
+
+const getTasks = async () => {
+
+    try {
+
+        const res = await axios.get('http://localhost:8000/api/tasks', {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            },
+        })
+
+        tasks.value = res.data
+
+    } catch(error) {
+
+        console.log("Error while fetching Tasks", error)
+
+    }
+
+}
+
+function getStatusColor(status: string) {
+  switch (status) {
+    case "pending":
+      return "#FBBF24"; // Amarelo
+    case "in_progress":
+      return "#3B82F6"; // Azul
+    case "completed":
+      return "#10B981"; // Verde
+    default:
+      return "#E5E7EB";
+  }
+}
+
+const tasksByStatus = (status: string) => {
+  return tasks.value.filter((task: any) => task.status === status);
+}
+
+onMounted(() => {
+    getTasks();
+});
 
 </script>
 
@@ -72,9 +80,12 @@ function onRequest(props: RequestProps) {
                     </div>
 
                     <div class="px-3 w-full flex justify-center md:justify-start ">
-                        
-                        <input type="text" name="search" id="search" class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]" placeholder="Search">
-                        <q-btn-dropdown stretch flat icon="fas fa-filter" size="12" class="text-[#64748b] scale-90 w-fit">
+
+                        <input type="text" name="search" id="search"
+                            class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]"
+                            placeholder="Search">
+                        <q-btn-dropdown stretch flat icon="fas fa-filter" size="12"
+                            class="text-[#64748b] scale-90 w-fit">
                             <q-list dense>
                                 <q-item>
                                     <q-checkbox v-model="pending" size="sm" label="Pending" color="cyan" />
@@ -90,46 +101,54 @@ function onRequest(props: RequestProps) {
 
                     </div>
 
-                    <div class="w-full px-5 py-2 text-gray-900 flex flex-col items-left">
+                    <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in tasks" :key="task.id">
 
-                        <q-table
-                            :rows="rows"
-                            :columns="columns"
-                            :rows-per-page-options="[5, 10, 15]"
-                            row-key="id"
-                            :pagination="pagination"
-                            @request="onRequest"
-                        >
-                            <template v-slot:top-right>
-                                <q-btn color="black" label="Create task" class="rounded-md" />
-                            </template>
+                        <div
+                            class="flex justify-start gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
 
-                            <!--ACTIONS-->
+                            <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
+                                <q-tooltip v-if="showTooltip" class="bg-white text-black shadow-lg">
+                                    {{task.category_id}}
+                                </q-tooltip>
+                            </div>
 
-                            <template v-slot:body-cell-actions="props">
-                                <q-btn 
-                                icon="edit" 
-                                color="primary" 
-                                flat 
-                                @click="" 
-                                />
-                                <q-btn 
-                                icon="delete" 
-                                color="negative" 
-                                flat 
-                                @click="" 
-                                />
-                            </template>
+                            <div>
+                                <p class="text-lg font-bold mb-0">{{ task.title }}</p>
+                                <p>{{ task.description }}</p>
+                            </div>
 
-                            <!--CATEGORY-->
+                            <div class="grid grid-cols-2 grid-rows-2 gap-1">
+                                <p>Category: <strong :style="{ color: task.category.color }">{{task.category.name}}</strong></p>
+                                <p>Completed At: <strong> - </strong></p>
+                                <p>Created At: <strong>{{moment(task.created_at).format('DD/MM/YYYY')}}</strong></p>
+                            </div>
 
-                            <template v-slot:body-cell-category="props">
-                                <div class="flex items-center justify-center px-16p py-7">
-                                    <div class="circle w-2 h-2 rounded-full bg-red-400"></div>
-                                    <span class="q-ml-sm">{{ props.row.category }}</span>
-                                </div>
-                            </template>
-                        </q-table>
+                            <div>
+                                <q-btn-dropdown icon="fas fa-ellipsis-vertical" unelevated dense>
+                                    <q-list dense>
+                                        <q-item clickable v-close-popup>
+                                            <q-item-section>
+                                                <q-item-label>Edit</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-close-popup>
+                                            <q-item-section>
+                                                <q-item-label>Mark as complete</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-close-popup>
+                                            <q-item-section>
+                                                <q-item-label>Delete</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-btn-dropdown>
+                            </div>
+
+                        </div>
+
 
                     </div>
 

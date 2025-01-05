@@ -4,6 +4,7 @@ import GuestLayout from '../layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 import { ref } from 'vue';
+import { useAuth } from 'src/hooks/useAuth';
 
 const dense = true
 const router = useRouter()
@@ -13,6 +14,7 @@ defineProps<{
     status?: string;
 }>();
 
+const auth = useAuth()
 
 const form = useForm({
     email: '',
@@ -36,7 +38,7 @@ const submit = () => {
     .then((res: { data: { token: string } }) => {
         
         if(res.data.token) {
-            localStorage.setItem('accessToken', res.data.token)
+            auth.setToken(res.data.token)
             router.push({ name: 'index' })
         }
 

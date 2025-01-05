@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 class TasksController extends Controller
 {
 
-    public function index(): JsonResponse  {
+    public function index()  {
 
-        $tasks = Task::paginate(10);
+        $tasks = Task::with('category')->get();
         
         return response()->json($tasks);
 
