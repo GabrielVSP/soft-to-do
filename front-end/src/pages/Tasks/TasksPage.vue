@@ -83,7 +83,16 @@ const changeStatus = async (id: number, status: string) => {
 }
 
 const deleteTask = async (id: number) => {
-    
+    axios.delete('http://localhost:8000/api/tasks/'+id, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+        }
+        })
+        .catch((error) => {
+            console.error('Error:', error.response?.data || error.message);
+        }).finally(() => {
+            location.reload()
+        })
 }
 
 onMounted(() => {
@@ -201,8 +210,8 @@ onMounted(() => {
                                             </q-item-section>
                                         </q-item>
 
-                                        <q-item clickable v-close-popup>
-                                            <q-item-section>
+                                        <q-item clickable v-close-popup @click="deleteTask(task.id)">
+                                            <q-item-section class="text-red-400">
                                                 <q-item-label>Delete</q-item-label>
                                             </q-item-section>
                                         </q-item>
