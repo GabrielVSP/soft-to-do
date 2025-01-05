@@ -9,9 +9,8 @@ const routes: RouteRecordRaw[] = [
     beforeEnter(to, from, next) {
       if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
         next('/login');
-        return
-      } 
-        next()
+      } else {
+        next() }
     }
   },
   {
@@ -22,9 +21,8 @@ const routes: RouteRecordRaw[] = [
     beforeEnter(to, from, next) {
       if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
         next('/login');
-        return
-      } 
-        next()
+      } else {
+        next() }
     }
   },
   {
@@ -35,9 +33,8 @@ const routes: RouteRecordRaw[] = [
     beforeEnter(to, from, next) {
       if(to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('accessToken')) {
         next('/login');
-        return
-      } 
-        next()
+      } else {
+        next() }
     }
   },
   {

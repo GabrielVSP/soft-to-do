@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import GuestLayout from '../layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
+import { ref } from 'vue';
 
 const dense = true
 const router = useRouter()
@@ -12,6 +13,7 @@ defineProps<{
     status?: string;
 }>();
 
+const errors = ref<{ general: string }>({general: ''})
 
 const form = useForm({
     name: '',
@@ -41,7 +43,14 @@ const submit = () => {
 
     })
     .catch((error) => {
-        console.error('Error:', error.response?.data || error.message);
+        
+        if (error.response && error.response.status === 401) {
+            errors.value = { general: "The provided credentials are incorrect." }
+        } 
+
+        console.log(errors)
+
+
     })
 
 };

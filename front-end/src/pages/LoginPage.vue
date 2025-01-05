@@ -34,9 +34,11 @@ const submit = () => {
         }
     },)
     .then((res: { data: { token: string } }) => {
-
-        localStorage.setItem('accessToken', res.data.token)
-        router.push({ name: 'index' })
+        
+        if(res.data.token) {
+            localStorage.setItem('accessToken', res.data.token)
+            router.push({ name: 'index' })
+        }
 
     })
     .catch((error) => {
@@ -44,8 +46,6 @@ const submit = () => {
         if (error.response && error.response.status === 401) {
             errors.value = { general: "The provided credentials are incorrect." }
         } 
-
-        console.log(errors)
         
     })
 
