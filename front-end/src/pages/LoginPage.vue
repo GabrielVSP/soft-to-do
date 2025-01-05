@@ -20,33 +20,27 @@ const form = useForm({
 
 const submit = () => {
 
-    form.post('http://localhost:8000/api/login')
+    axios.post('http://localhost:8000/api/login', {
+        email: form.email,
+        password: form.password
+    }, {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': '*',
+        }
+    },)
+    .then((res: { data: { token: string } }) => {
 
-}
+        localStorage.setItem('accessToken', res.data.token)
+        router.push({ name: 'index' })
 
-// const submit = () => {
+    })
+    .catch((error) => {
+        console.error('Error:', error.response?.data || error.message);
+    })
 
-//     axios.post('http://localhost:8000/api/login', {
-//         email: form.email,
-//         password: form.password
-//     }, {
-//         withCredentials: true,
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Accept': '*',
-//         }
-//     },)
-//     .then((res: { data: { token: string } }) => {
-
-//         localStorage.setItem('accessToken', res.data.token)
-//         router.push({ name: 'index' })
-
-//     })
-//     .catch((error) => {
-//         console.error('Error:', error.response?.data || error.message);
-//     })
-
-// };
+};
 
 </script>
 
@@ -128,7 +122,7 @@ const submit = () => {
                         New here? Register
                     </RouterLink>
 
-                    <q-btn label="Submit" type="submit" color="black" class="p-1" dense />
+                    <q-btn label="Login" type="submit" color="black" class="p-1" dense />
 
                 </div>
 

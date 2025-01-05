@@ -3,7 +3,7 @@
         class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0"
     >
         <div>
-            <h1 class="text-[3em] font-bold">To-do App</h1>
+            <h1 class="text-[3em] font-bold text-slate-600">To-do App</h1>
         </div>
 
         <div
