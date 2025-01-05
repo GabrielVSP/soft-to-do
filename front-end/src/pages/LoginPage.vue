@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import GuestLayout from '../layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
+import { ref } from 'vue';
 
 const dense = true
 const router = useRouter()
@@ -17,6 +18,8 @@ const form = useForm({
     email: '',
     password: '',
 });
+
+const errors = ref<{ general: string }>({general: ''})
 
 const submit = () => {
 
@@ -37,7 +40,13 @@ const submit = () => {
 
     })
     .catch((error) => {
-        console.error('Error:', error.response?.data || error.message);
+
+        if (error.response && error.response.status === 401) {
+            errors.value = { general: "The provided credentials are incorrect." }
+        } 
+
+        console.log(errors)
+        
     })
 
 };
@@ -71,9 +80,7 @@ const submit = () => {
                         color="black"
                         required
                     />
-                    <q-banner v-if="form.errors.email" class="text-negative !px-1 !py-0 !m-0">
-                        {{ form.errors.email }}
-                    </q-banner>
+                    
                 </div>
 
             </div>
@@ -95,8 +102,8 @@ const submit = () => {
                         required
                     />
 
-                    <q-banner v-if="form.errors.password" class="text-negative !px-1 !py-0 !m-0">
-                        {{ form.errors.password }}
+                    <q-banner v-if="errors.general" class="text-negative !px-1 !py-0 !m-0">
+                        {{ errors.general }}
                     </q-banner>
 
                 </div>
