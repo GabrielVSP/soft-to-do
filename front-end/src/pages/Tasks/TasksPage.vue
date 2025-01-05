@@ -2,14 +2,13 @@
 import axios from 'axios';
 import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
 import moment from 'moment';
-import { onMounted, ref } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { onMounted, ref, computed } from 'vue'
+import { RouterLink } from 'vue-router';
 
 const progress = ref(true)
 const pending = ref(true)
 const completed = ref(true)
 const showTooltip = ref(false);
-const router = useRoute()
 
 interface Task {
     id: number
@@ -26,6 +25,7 @@ interface Task {
 }
 
 const tasks = ref<Array<Task>>([])
+const searchQuery = ref('')
 
 const getTasks = async () => {
 
@@ -50,19 +50,28 @@ const getTasks = async () => {
 function getStatusColor(status: string) {
   switch (status) {
     case "pending":
-      return "#FBBF24"; // Amarelo
+      return "#FBBF24"
     case "in_progress":
-      return "#3B82F6"; // Azul
+      return "#3B82F6"
     case "completed":
-      return "#10B981"; // Verde
+      return "#10B981"
     default:
-      return "#E5E7EB";
+      return "#E5E7EB"
   }
 }
 
-const tasksByStatus = (status: string) => {
-  return tasks.value.filter((task: any) => task.status === status);
-}
+const filteredTasks = computed(() => {
+  return tasks.value.filter((task: Task) => {
+
+    const matchesSearch = task.title.toLowerCase().includes(searchQuery.value.toLowerCase()) || task.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+
+    const matchesStatus = (pending.value && task.status === 'pending') ||
+                          (progress.value && task.status === 'in_progress') ||
+                          (completed.value && task.status === 'completed');
+
+    return matchesSearch && matchesStatus;
+  });
+})
 
 const changeStatus = async (id: number, status: string) => {
 
@@ -75,7 +84,7 @@ const changeStatus = async (id: number, status: string) => {
         }
         })
         .catch((error) => {
-            console.error('Error:', error.response?.data || error.message);
+            console.error('Error:', error.response?.data || error.message)
         }).finally(() => {
             location.reload()
         })
@@ -89,7 +98,7 @@ const deleteTask = async (id: number) => {
         }
         })
         .catch((error) => {
-            console.error('Error:', error.response?.data || error.message);
+            console.error('Error:', error.response?.data || error.message)
         }).finally(() => {
             location.reload()
         })
@@ -110,7 +119,7 @@ onMounted(() => {
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg mb-3">
 
                     <div class="px-5 py-2 w-full flex flex-col md:flex-row justify-between items-start mb-3">
-                        <h2 class="text-3xl font-bold md:m-0 mb-1">Tasks (6)</h2>
+                        <h2 class="text-3xl font-bold md:m-0 mb-1">Tasks ({{ filteredTasks.length }})</h2>
                     </div>
 
                     <div class="px-3 w-full flex justify-between">
@@ -119,7 +128,7 @@ onMounted(() => {
 
                             <input type="text" name="search" id="search"
                                 class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]"
-                                placeholder="Search">
+                                placeholder="Search" v-model="searchQuery">
 
                             <q-btn-dropdown stretch flat icon="fas fa-filter" size="12"
                                 class="text-[#64748b] scale-90 w-fit">
@@ -146,7 +155,7 @@ onMounted(() => {
 
                     </div>
 
-                    <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in tasks" :key="task.id">
+                    <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in filteredTasks" :key="task.id">
 
                         <div class="w-1/2 flex justify-between gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
 
