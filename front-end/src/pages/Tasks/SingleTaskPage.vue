@@ -2,67 +2,138 @@
 
 import { useForm } from '@inertiajs/inertia-vue3';
 import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
 
+interface Task {
+    id: number
+    title: string
+    description: string
+    status: string
+    category_id: number
+    created_at: string
+    category: {
+        name: string,
+        color: string
+    }
+}
+
+interface Category {
+    id: number
+    name: string
+    color: string
+}
+
+const route = useRoute()
+const router = useRouter()
+
+const taskId = route.params.id
 const dense = true
-const options = ([
-        {
-          label: 'Google',
-          value: 'Google',
-          color: 'red'
-        },
-        {
-          label: 'Facebook',
-          value: 'Facebook',
-          color: '#6926B6'
-        },
-        {
-          label: 'Twitter',
-          value: 'Twitter',
-          color: '#6926B6'
-        },
-        {
-          label: 'Apple',
-          value: 'Apple',
-          color: '#6926B6'
-        },
-        {
-          label: 'Oracle',
-          value: 'Oracle',
-          color: '#6926B6'
+
+const task = ref<Task>()
+const user = ref<{id: string}>()
+const options = ref([])
+
+const getTask = async () => {
+
+    try {
+
+        const res = await axios.get('http://localhost:8000/api/tasks/'+ (taskId !== 'create' ? taskId : ''), {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            },
+        })
+
+        if(res.data) {
+            task.value = res.data
+            form.title = res.data.title
+            form.description = res.data.description
+            form.category = res.data.category.id
         }
-])
+
+    } catch(error) {
+
+        console.log("Error while fetching Tasks", error)
+
+    }
+
+}
+
+async function getUser() {
+
+    try {
+
+        const res = await axios.get('http://localhost:8000/api/user', {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                    },
+        })
+
+        user.value = res.data
+
+    } catch {
+        console.log("Erro while fetching user data")
+    }
+
+}
+
+async function getCategories() {
+  try {
+    const response = await axios.get('http://localhost:8000/api/categories')
+
+    options.value = response.data.map((provider: Category) => ({
+      label: provider.name,
+      value: provider.id, 
+      color: provider.color || '#000000',
+    }))
+
+  } catch (error) {
+    console.error('Error while fetching categories', error);
+  }
+}
 
 const form = useForm({
     title: '',
     description: '',
-    category: '',
+    category: {
+        value: ''
+    },
 });
 
 const submit = () => {
+    
+    if(task.value) {
 
-    axios.post('http://localhost:8000/api/login', {
-        // email: form.email,
-        // password: form.password
-    }, {
-        withCredentials: true,
+    }
+
+    if(!task.value?.title) {
+
+        axios.post('http://localhost:8000/api/tasks', {
+            title: form.title,
+            description: form.description,
+            category_id: form.category?.value,
+            user_id: user.value?.id
+        }, {
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': '*',
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
         }
-    },)
-        .then((res: { data: { token: string } }) => {
-
-            localStorage.setItem('accessToken', res.data.token)
-            // router.push({ name: 'index' })
-
         })
         .catch((error) => {
             console.error('Error:', error.response?.data || error.message);
+        }).finally(() => {
+            // router.push({name: 'tasks'})
         })
 
+    }
+    
 }
+
+onMounted(() => {
+    getTask()
+    getCategories()
+    getUser()
+})
 
 </script>
 
@@ -75,7 +146,7 @@ const submit = () => {
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg mb-3">
 
                     <div class="px-5 py-2 w-full flex flex-col md:flex-row justify-between items-start mb-3">
-                        <h2 class="text-3xl font-bold md:m-0 mb-1">Create task</h2>
+                        <h2 class="text-3xl font-bold md:m-0 mb-1">{{task?.title ? 'Update' : 'Create' }} task</h2>
                     </div>
 
                     <div class="w-full px-5 py-2 text-gray-900 flex flex-col items-left">
@@ -153,7 +224,7 @@ const submit = () => {
 
                             </div>
 
-                            <q-btn label="Create" type="submit" color="black" class="p-2 mt-2" />
+                            <q-btn :label="task?.title ? 'Update' : 'Create'" type="submit" color="black" class="p-2 mt-2" />
 
                         </q-form>
 

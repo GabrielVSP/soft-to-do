@@ -22,7 +22,7 @@ class TasksController extends Controller
 
     public function show(string $id): JsonResponse {
 
-        $task = Task::find($id);
+        $task = Task::with('category')->find($id);
 
         return response()->json($task);
 

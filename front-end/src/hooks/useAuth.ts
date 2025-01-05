@@ -5,7 +5,6 @@ const token = ref<string|null>(sessionStorage.getItem('accessToken'));
 
 export function useAuth() {
 
-
     function user() {
 
         try {
@@ -13,12 +12,12 @@ export function useAuth() {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }).then((res) => res.data)
+            }).then((res) => (res.data))
             
         } catch {
 
             return false
-            
+
         }
         
     }

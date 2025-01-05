@@ -3,6 +3,7 @@ import axios from 'axios';
 import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
 import moment from 'moment';
 import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router';
 
 const progress = ref(true)
 const pending = ref(true)
@@ -79,32 +80,39 @@ onMounted(() => {
                         <h2 class="text-3xl font-bold md:m-0 mb-1">Tasks (6)</h2>
                     </div>
 
-                    <div class="px-3 w-full flex justify-center md:justify-start ">
+                    <div class="px-3 w-full flex justify-between">
 
-                        <input type="text" name="search" id="search"
-                            class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]"
-                            placeholder="Search">
-                        <q-btn-dropdown stretch flat icon="fas fa-filter" size="12"
-                            class="text-[#64748b] scale-90 w-fit">
-                            <q-list dense>
-                                <q-item>
-                                    <q-checkbox v-model="pending" size="sm" label="Pending" color="cyan" />
-                                </q-item>
-                                <q-item>
-                                    <q-checkbox v-model="progress" size="sm" label="In Progress" color="cyan" />
-                                </q-item>
-                                <q-item>
-                                    <q-checkbox v-model="completed" size="sm" label="Completed" color="cyan" />
-                                </q-item>
-                            </q-list>
-                        </q-btn-dropdown>
+                        <div class="flex justify-center md:justify-start">
+                            <input type="text" name="search" id="search"
+                                class="md:w-1/3 min-w-[70%] p-2 rounded-lg border border-[#64748b] text-[#64748b]"
+                                placeholder="Search">
+                            <q-btn-dropdown stretch flat icon="fas fa-filter" size="12"
+                                class="text-[#64748b] scale-90 w-fit">
+                                <q-list dense>
+                                    <q-item>
+                                        <q-checkbox v-model="pending" size="sm" label="Pending" color="cyan" />
+                                    </q-item>
+                                    <q-item>
+                                        <q-checkbox v-model="progress" size="sm" label="In Progress" color="cyan" />
+                                    </q-item>
+                                    <q-item>
+                                        <q-checkbox v-model="completed" size="sm" label="Completed" color="cyan" />
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
+
+                        <div>
+                            <RouterLink to="tasks/create">
+                            <q-btn color="black" text-color="white" label="Create Task" class="p-2" dense />
+                            </RouterLink>
+                        </div>
 
                     </div>
 
                     <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in tasks" :key="task.id">
 
-                        <div
-                            class="flex justify-start gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
+                        <div class="flex justify-start gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
 
                             <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
                                 <q-tooltip v-if="showTooltip" class="bg-white text-black shadow-lg">
@@ -126,11 +134,14 @@ onMounted(() => {
                             <div>
                                 <q-btn-dropdown icon="fas fa-ellipsis-vertical" unelevated dense>
                                     <q-list dense>
-                                        <q-item clickable v-close-popup>
-                                            <q-item-section>
-                                                <q-item-label>Edit</q-item-label>
-                                            </q-item-section>
-                                        </q-item>
+
+                                        <RouterLink :to="`/tasks/${task.id}`">
+                                            <q-item clickable v-close-popup>
+                                                    <q-item-section>
+                                                        <q-item-label>Edit</q-item-label>
+                                                    </q-item-section>
+                                            </q-item>
+                                        </RouterLink>
 
                                         <q-item clickable v-close-popup>
                                             <q-item-section>
