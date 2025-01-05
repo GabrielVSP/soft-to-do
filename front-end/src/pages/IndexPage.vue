@@ -55,10 +55,12 @@ onMounted(() => {
 
                             <div class="p-2" v-for="task in tasksByStatus('pending')" :key="task.id">
 
-                                <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
-                                    <p class="text-md mb-0">{{ task.title }}</p>
-                                    <q-icon name="fas fa-arrow-up-right-from-square" class="" />
-                                </div>
+                                <RouterLink :to="`/tasks/${task.id}`">
+                                    <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
+                                        <p class="text-md mb-0">{{ task.title }}</p>
+                                        <q-icon name="fas fa-arrow-up-right-from-square" class="" />
+                                    </div>
+                                </RouterLink>
 
                             </div>
 
@@ -72,10 +74,12 @@ onMounted(() => {
 
                             <div class="p-2" v-for="task in tasksByStatus('in_progress')" :key="task.id">
 
-                                <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
-                                    <p class="text-md mb-0">{{ task.title }}</p>
-                                    <q-icon name="fas fa-arrow-up-right-from-square" class="" />
-                                </div>
+                                <RouterLink :to="`/tasks/${task.id}`">
+                                    <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
+                                        <p class="text-md mb-0">{{ task.title }}</p>
+                                        <q-icon name="fas fa-arrow-up-right-from-square" class="" />
+                                    </div>
+                                </RouterLink>
 
                             </div>
 
@@ -89,10 +93,12 @@ onMounted(() => {
 
                             <div class="p-2" v-for="task in tasksByStatus('completed')" :key="task.id">
 
-                                <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
-                                    <p class="text-md mb-0">{{ task.title }}</p>
-                                    <q-icon name="fas fa-arrow-up-right-from-square" class="" />
-                                </div>
+                                <RouterLink :to="`/tasks/${task.id}`">
+                                    <div class="flex justify-between items-center rounded-md hover:bg-indigo-500 hover:text-white duration-500 p-2 border-b-2 border-indigo-700 cursor-pointer">
+                                        <p class="text-md mb-0">{{ task.title }}</p>
+                                        <q-icon name="fas fa-arrow-up-right-from-square" class="" />
+                                    </div>
+                                </RouterLink>
 
                             </div>
 

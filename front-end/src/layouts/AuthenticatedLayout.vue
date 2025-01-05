@@ -20,11 +20,6 @@ import { RouterLink } from 'vue-router';
                                 <q-item clickable v-close-popup>
                                 <q-item-section> <RouterLink to="/tasks">Tasks</RouterLink> </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup>
-                                <q-item-section>Profile</q-item-section>
-                                </q-item>
-                                <q-separator />
-                                
                             </q-list>
                             </q-menu>
                         </q-btn>
@@ -33,7 +28,6 @@ import { RouterLink } from 'vue-router';
                     <div class="md:!flex hidden text-[#64748b] text-lg gap-2">
 
                         <RouterLink to="/tasks" class=" hover:text-black duration-300">Tasks</RouterLink>
-                        <RouterLink to="/profile" class=" hover:text-black duration-300">Profile</RouterLink>
 
                     </div>
 

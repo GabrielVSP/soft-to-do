@@ -3,12 +3,13 @@ import axios from 'axios';
 import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
 import moment from 'moment';
 import { onMounted, ref } from 'vue'
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 
 const progress = ref(true)
 const pending = ref(true)
 const completed = ref(true)
 const showTooltip = ref(false);
+const router = useRoute()
 
 interface Task {
     id: number
@@ -60,6 +61,24 @@ function getStatusColor(status: string) {
 
 const tasksByStatus = (status: string) => {
   return tasks.value.filter((task: any) => task.status === status);
+}
+
+const markAsComplete = async (id: number) => {
+
+    axios.patch('http://localhost:8000/api/tasks/'+id, {
+            status: 'completed',
+            completed_at: moment().format('YYYY-MM-DD')
+        }, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+        }
+        })
+        .catch((error) => {
+            console.error('Error:', error.response?.data || error.message);
+        }).finally(() => {
+            location.reload()
+        })
+
 }
 
 onMounted(() => {
@@ -120,7 +139,7 @@ onMounted(() => {
                             <div class="flex justify-between gap-5 items-center">
                                 <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
                                     <q-tooltip v-if="showTooltip" class="bg-white text-black shadow-lg">
-                                        {{task.category_id}}
+                                        {{task.status}}
                                     </q-tooltip>
                                 </div>
                                 <div>
@@ -146,7 +165,7 @@ onMounted(() => {
                                             </q-item>
                                         </RouterLink>
 
-                                        <q-item clickable v-close-popup>
+                                        <q-item clickable v-close-popup @click="markAsComplete(task.id)">
                                             <q-item-section>
                                                 <q-item-label>Mark as complete</q-item-label>
                                             </q-item-section>
