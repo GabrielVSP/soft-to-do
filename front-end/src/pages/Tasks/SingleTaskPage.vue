@@ -34,6 +34,20 @@ const dense = true
 const task = ref<Task>()
 const user = ref<{id: string}>()
 const options = ref([])
+const statusOptions = [
+    {
+        label: 'Pending',
+        value: 'pending',
+    },
+    {
+        label: 'In Progress',
+        value: 'in_progress',
+    },
+    {
+        label: 'Completed',
+        value: 'completed',
+    },
+]
 
 const getTask = async () => {
 
@@ -99,6 +113,7 @@ const form = useForm({
     category: {
         value: ''
     },
+    status: ''
 });
 
 const submit = () => {
@@ -229,6 +244,23 @@ onMounted(() => {
 
                                         </q-select>
 
+                                        <q-banner v-if="form.errors.category" class="text-negative !px-1 !py-0 !m-0">
+                                            {{ form.errors.category }}
+                                        </q-banner>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="md:w-1/4 w-full">
+
+                                    <label for="category">Category</label>
+
+                                    <div class="p-1">
+
+                                        <q-select v-model="form.status" :dense="dense" :options="statusOptions"
+                                            color="black" outlined />
+                
                                         <q-banner v-if="form.errors.category" class="text-negative !px-1 !py-0 !m-0">
                                             {{ form.errors.category }}
                                         </q-banner>

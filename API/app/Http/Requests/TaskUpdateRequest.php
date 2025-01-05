@@ -23,10 +23,10 @@ class TaskUpdateRequest extends FormRequest
     {
         return [
             'title' => ['nullable','string','max:255'],
-            'description' => ['nullable','string','max:500'],
+            'description' => ['nullable','string'],
             'status' => ['nullable','string','max:500'],
             'category_id' => ['nullable','integer','exists:categories,id'],
-            'completed_at' => ['nullable','string','max:500']
+            'completion_date' => ['nullable','string']
         ];
     }
 }

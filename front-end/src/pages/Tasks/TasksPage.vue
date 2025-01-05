@@ -18,6 +18,7 @@ interface Task {
     status: string
     category_id: number
     created_at: string
+    completion_date: string
     category: {
         name: string,
         color: string
@@ -63,11 +64,11 @@ const tasksByStatus = (status: string) => {
   return tasks.value.filter((task: any) => task.status === status);
 }
 
-const markAsComplete = async (id: number) => {
+const changeStatus = async (id: number, status: string) => {
 
     axios.patch('http://localhost:8000/api/tasks/'+id, {
-            status: 'completed',
-            completed_at: moment().format('YYYY-MM-DD')
+            status: status,
+            completion_date: status === 'completed' ? moment().format('YYYY-MM-DD') : null
         }, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
@@ -79,6 +80,10 @@ const markAsComplete = async (id: number) => {
             location.reload()
         })
 
+}
+
+const deleteTask = async (id: number) => {
+    
 }
 
 onMounted(() => {
@@ -134,7 +139,7 @@ onMounted(() => {
 
                     <div class="w-full mt-4 px-5 py-2 text-gray-900 flex flex-col items-start" v-for="task in tasks" :key="task.id">
 
-                        <div class="w-1/3 flex justify-between gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
+                        <div class="w-1/2 flex justify-between gap-5 items-center rounded-md mb-2 duration-500 p-2 shadow-lg border-indigo-700 cursor-pointer">
 
                             <div class="flex justify-between gap-5 items-center">
                                 <div class="w-4 h-4 rounded-lg mx-3" :style="{ backgroundColor: getStatusColor(task.status) }" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
@@ -148,8 +153,33 @@ onMounted(() => {
                                 </div>
                                 <div class="grid grid-cols-2 grid-rows-2 gap-1 self-end">
                                     <p>Category: <strong :style="{ color: task.category.color }">{{task.category.name}}</strong></p>
-                                    <p>Completed At: <strong> - </strong></p>
+                                    <p>Completed At: <strong> {{task.completion_date ? moment(task.completion_date).format('DD/MM/YYYY') : '-'}} </strong></p>
+                                    <p :style="{ color: getStatusColor(task.status) }"><span class="text-black">Status</span>:
+                                        <q-btn-dropdown :label="task.status" unelevated dense>
+                                            <q-list dense>
+
+                                                <q-item clickable v-close-popup @click="changeStatus(task.id, 'pending')">
+                                                        <q-item-section class="text-yellow-500">
+                                                            <q-item-label>Pending</q-item-label>
+                                                        </q-item-section>
+                                                </q-item>
+
+                                                <q-item clickable v-close-popup @click="changeStatus(task.id, 'in_progress')">
+                                                    <q-item-section class="text-blue-500">
+                                                        <q-item-label>In progress</q-item-label>
+                                                    </q-item-section>
+                                                </q-item>
+
+                                                <q-item clickable v-close-popup @click="changeStatus(task.id, 'completed')">
+                                                    <q-item-section class="text-green-500">
+                                                        <q-item-label>Completed</q-item-label>
+                                                    </q-item-section>
+                                                </q-item>
+                                            </q-list>
+                                        </q-btn-dropdown>
+                                </p>
                                     <p>Created At: <strong>{{moment(task.created_at).format('DD/MM/YYYY')}}</strong></p>
+
                                 </div>
                             </div>
 
@@ -165,7 +195,7 @@ onMounted(() => {
                                             </q-item>
                                         </RouterLink>
 
-                                        <q-item clickable v-close-popup @click="markAsComplete(task.id)">
+                                        <q-item clickable v-close-popup @click="changeStatus(task.id, 'completed')">
                                             <q-item-section>
                                                 <q-item-label>Mark as complete</q-item-label>
                                             </q-item-section>
