@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,6 +15,18 @@ return new class extends Migration
         Schema::table('categories', function (Blueprint $table) {
            $table->string('color');
         });
+
+        $categories = [
+            ['name' => 'Food', 'color' => '#E4D84C'],
+            ['name' => 'Sports', 'color' => '#4CA7E4'],
+            ['name' => 'Work', 'color' => '#4CE486'],
+            ['name' => 'Home', 'color' => '#D04CE4']
+        ];
+
+        foreach ($categories as $category) {
+            DB::table('categories')->firstOrCreate($category);
+        }
+
     }
 
     /**

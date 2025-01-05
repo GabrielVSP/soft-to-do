@@ -50,7 +50,7 @@ onMounted(() => {
                         <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
-                                <h3 class="text-lg font-bold border-b border-yellow-500 w-fit">Pending (3)</h3>
+                                <h3 class="text-lg font-bold border-b border-yellow-500 w-fit">Pending ({{tasksByStatus('pending').length}})</h3>
                             </div>
 
                             <div class="p-2" v-for="task in tasksByStatus('pending')" :key="task.id">
@@ -69,7 +69,7 @@ onMounted(() => {
                         <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
-                                <h3 class="text-lg font-bold border-b border-blue-500 w-fit">In Progress (2)</h3>
+                                <h3 class="text-lg font-bold border-b border-blue-500 w-fit">In Progress ({{tasksByStatus('in_progress').length}})</h3>
                             </div>
 
                             <div class="p-2" v-for="task in tasksByStatus('in_progress')" :key="task.id">
@@ -88,7 +88,7 @@ onMounted(() => {
                         <div class="mb-1 p-3 w-11/12 shadow-lg lg:w-1/3">
 
                             <div class="mb-3">
-                                <h3 class="text-lg font-bold border-b border-green-500 w-fit">Completed (1)</h3>
+                                <h3 class="text-lg font-bold border-b border-green-500 w-fit">Completed ({{tasksByStatus('completed').length}})</h3>
                             </div>
 
                             <div class="p-2" v-for="task in tasksByStatus('completed')" :key="task.id">
