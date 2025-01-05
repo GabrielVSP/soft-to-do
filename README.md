@@ -126,4 +126,16 @@ Certifique-se de que o back-end está usando a porta :8000 e o front-end a porta
 4- Métodos DELETE
 - `DELETE` **api/task/[ID]**:
    * Remove a tarefa especifica pelo ID, é necessário enviar o token Bearer nos headers.
-    
+
+## Modelo Entidade-Relacionamento 
+![image](https://github.com/user-attachments/assets/450015a3-2ab1-45a5-a820-d041af53d384)
+* Users possui uma relação 1:N com as tarefas(um usuário pode ter várias tareafas)
+* Categories possui uma relação 1:N com as tarefas(uma categoria pode ter várias tareafas)
+
+## Galeria
+<div style="text-align: center; margin: auto">
+  <img src="https://github.com/user-attachments/assets/c3df7dee-3852-45b6-949f-f5b6322bea11" width="400">
+  <img src="https://github.com/user-attachments/assets/42cef769-ab62-4c7f-898c-ed12c973d3b7" width="400">
+  <img src="https://github.com/user-attachments/assets/d7da328c-a364-412b-966f-de4821143936" width="400">
+  <img src="https://github.com/user-attachments/assets/ebfbeb7a-181a-4b93-a853-cccdbef20959" width="400">
+</div>
