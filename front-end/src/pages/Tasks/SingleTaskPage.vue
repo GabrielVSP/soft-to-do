@@ -118,7 +118,7 @@ const submit = () => {
         .catch((error) => {
             console.error('Error:', error.response?.data || error.message);
         }).finally(() => {
-            router.push({name: 'tasks'})
+            location.href = "http://localhost:9000/tasks"
         })
 
     }
@@ -138,7 +138,7 @@ const submit = () => {
         .catch((error) => {
             console.error('Error:', error.response?.data || error.message);
         }).finally(() => {
-            router.push({name: 'tasks'})
+            location.href = "http://localhost:9000/tasks"
         })
 
     }

@@ -39,7 +39,7 @@ const submit = () => {
         
         if(res.data.token) {
             auth.setToken(res.data.token)
-            router.push({ name: 'index' })
+            location.href = "http://localhost:9000/"
         }
 
     })
